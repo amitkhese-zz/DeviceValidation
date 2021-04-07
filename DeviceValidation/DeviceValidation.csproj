@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="9.5.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Com.TMobile.Syncup.Device.Lifecycle.Models">
+      <HintPath>..\lib\Com.TMobile.Syncup.Device.Lifecycle.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Com.TMobile.Syncup.Device.Telemetry.Models">
+      <HintPath>..\lib\Com.TMobile.Syncup.Device.Telemetry.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
