@@ -8,12 +8,12 @@ namespace DeviceV2Tests.Validators.Sensor
 {
     public class LocationValidatorTest : BaseValidatorTest
     {
-        private readonly LocationValidator validator =
-            new LocationValidator();
-
+        private LocationValidator validator;
+            
         [Fact]
         public void HappyPath()
         {
+            validator = new LocationValidator("Product1");
             var model = CreateLocation();
             var result = validator.TestValidate(model);
 
@@ -28,6 +28,7 @@ namespace DeviceV2Tests.Validators.Sensor
             decimal invalidLatitude,
             decimal invalidRadius)
         {
+            validator = new LocationValidator("Product1");
             var model = CreateLocation();
 
             model.Accuracy = invalidRadius;
@@ -39,6 +40,53 @@ namespace DeviceV2Tests.Validators.Sensor
             result.ShouldHaveValidationErrorFor("Accuracy");
             result.ShouldHaveValidationErrorFor("Latitude");
             result.ShouldHaveValidationErrorFor("Longitude");
+        }
+
+        [Fact]
+        public void validLocationAccuracyData_WithTrackerProduct_ShouldNotHaveAnyValidationErrors()
+        {
+            validator = new LocationValidator("TRACKER");
+            var model = CreateLocation();
+            var result = validator.TestValidate(model);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Fact]
+        public void validLocationAccuracyData_WithNullProduct_ShouldNotHaveAnyValidationErrors()
+        {
+            validator = new LocationValidator(null);
+            var model = CreateLocation();
+
+            var result = validator.TestValidate(model);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Fact]
+        public void validLocationAccuracyData_WithEmptyProduct_ShouldNotHaveAnyValidationErrors()
+        {
+            validator = new LocationValidator(string.Empty);
+            var model = CreateLocation();
+
+            var result = validator.TestValidate(model);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Theory]
+        [InlineData(100)]
+        [InlineData(100.00001)]
+        public void InvalidLocationAccuracyData_WithTrackerProduct_ShouldHaveValidationError(decimal invalidRadius)
+        {
+            validator = new LocationValidator("TRACKER");
+            var model = CreateLocation();
+
+            model.Accuracy = invalidRadius;
+
+            var result = validator.TestValidate(model);
+
+            result.ShouldHaveValidationErrorFor("Accuracy");
         }
     }
 }
