@@ -39,7 +39,7 @@ namespace DeviceV2.Validators.CustomValidationRules
                 return null;
             }
 
-            var AccuracyMaxLevel = ProductLocation.GetProductsAccuracyMaxLevel(productId);
+            var AccuracyMaxLevel = ProductLocationUtils.GetAccuracyMaxLevelByProduct(productId);
 
             return ruleBuilder.LessThan(AccuracyMaxLevel)
                 .WithMessage("[{PropertyName}] of [{PropertyValue}] cannot be greater than [" + AccuracyMaxLevel + "].");

@@ -88,5 +88,30 @@ namespace DeviceV2Tests.Validators.Sensor
 
             result.ShouldHaveValidationErrorFor("Accuracy");
         }
+
+        [Fact]
+        public void validLocationAccuracyData_WithProduct2_ShouldNotHaveAnyValidationErrors()
+        {
+            validator = new LocationValidator("Product2");
+            var model = CreateLocation();
+            var result = validator.TestValidate(model);
+
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Theory]
+        [InlineData(200)]
+        [InlineData(200.00001)]
+        public void InvalidLocationAccuracyData_WithProduct2_ShouldHaveValidationError(decimal invalidRadius)
+        {
+            validator = new LocationValidator("Product2");
+            var model = CreateLocation();
+
+            model.Accuracy = invalidRadius;
+
+            var result = validator.TestValidate(model);
+
+            result.ShouldHaveValidationErrorFor("Accuracy");
+        }
     }
 }
